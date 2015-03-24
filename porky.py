@@ -6,17 +6,22 @@ import httplib
 import os
 
 import logging
-logging.basicConfig(filename='/var/log/porky.log', level=logging.DEBUG)
+logging.basicConfig(
+        filename='/var/log/porky.log',
+        level=logging.DEBUG,
+        format='%(asctime)s.%(msecs)d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+        datefmt="%Y-%m-%d %H:%M:%S"
+        )
 logging.debug('PorkyPi started')
 
 def porkput(path):
-    logging.info("PUT " + path)
+    logging.info("Request:  PUT " + path)
     api_key = os.getenv("API_KEY")
     conn = httplib.HTTPSConnection("porkchop.freerunningtech.com")
     headers = {"Content-type": "application/x-www-form-urlencoded"}
     conn.request('PUT', path, "table_token="+api_key, headers)
     result = conn.getresponse()
-    logging.info(result.status)
+    logging.info("Response: " + str(result.status) + " " + str(result.reason))
     conn.close()
 
 def homeButton(channel):

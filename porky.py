@@ -17,7 +17,7 @@ logging.debug('PorkyPi started')
 def porkput(path):
     logging.info("Request:  PUT " + path)
     api_key = os.getenv("API_KEY")
-    conn = httplib.HTTPSConnection("porkchop.freerunningtech.com")
+    conn = httplib.HTTPConnection("porkchop.freerunningtech.com")
     headers = {"Content-type": "application/x-www-form-urlencoded"}
     conn.request('PUT', path, "table_token="+api_key, headers)
     result = conn.getresponse()

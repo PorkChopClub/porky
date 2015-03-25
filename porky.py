@@ -38,7 +38,7 @@ GPIO.setup(24, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 def waitForDown(pin):
 	while GPIO.input(pin):
-		sleep(0.05)
+		time.sleep(0.05)
 
 while True:
 	if GPIO.input(23):

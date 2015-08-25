@@ -30,25 +30,37 @@ def homeButton(channel):
 def awayButton(channel):
     porkput("/api/table/away_button")
 
+HOME_BUTT = 23
+AWAY_BUTT = 24
+HOME_LED = 25
+AWAY_LED = 17
+
+
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(23, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-GPIO.setup(24, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-#GPIO.add_event_detect(23, GPIO.RISING, callback=homeButton, bouncetime=1000)
-#GPIO.add_event_detect(24, GPIO.RISING, callback=awayButton, bouncetime=1000)
+GPIO.setup(HOME_BUTT, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+GPIO.setup(AWAY_BUTT, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+
+GPIO.setup(HOME_LED, GPIO.OUT, initial = 0)
+GPIO.setup(AWAY_LED, GPIO.OUT, initial = 0)
+
 
 def waitForDown(pin):
 	while GPIO.input(pin):
 		time.sleep(0.05)
 
 while True:
-	if GPIO.input(23):
-		homeButton(23)
-		waitForDown(23)
+	if GPIO.input(HOME_BUTT):
+		GPIO.output(HOME_LED, GPIO.HIGH)
+		homeButton(HOME_BUTT)
+		waitForDown(HOME_BUTT)
 		time.sleep(0.5)
-	if GPIO.input(24):
-		awayButton(24)
-		waitForDown(24)
+		GPIO.output(HOME_LED, GPIO.LOW)
+	if GPIO.input(AWAY_BUTT):
+		GPIO.output(AWAY_LED, GPIO.HIGH)
+		awayButton(AWAY_BUTT)
+		waitForDown(AWAY_BUTT)
 		time.sleep(0.5)
+		GPIO.output(AWAY_LED, GPIO.LOW)
 	time.sleep(0.05)
 
 GPIO.cleanup()
